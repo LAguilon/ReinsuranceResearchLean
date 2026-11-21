@@ -1,3 +1,4 @@
 import Research.Bernoulli
 import Research.StopLoss
 import Research.StopLossBounded
+import Research.Real.Sqrt
