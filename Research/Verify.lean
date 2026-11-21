@@ -14,6 +14,7 @@ import Research.StopLoss
 import Research.StopLossBounded
 import Research.Real.Sqrt
 import Research.StopLoss.BoundedReal
+import Research.Real.SqrtEndpoints
 
 namespace Research
 
@@ -64,3 +65,9 @@ end Research
 #print axioms Research.atomTop_majorant_R
 #print axioms Research.stopLoss_bound_atom_top_R
 #print axioms Research.stopLoss_variance_zero
+#print axioms Research.sStar_pos
+#print axioms Research.f_sStar
+#print axioms Research.f_mu
+#print axioms Research.f_lo
+#print axioms Research.coverage_atom_zero
+#print axioms Research.coverage_atom_top
