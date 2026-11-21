@@ -41,8 +41,11 @@ jobs:
             echo "::error::sorryAx reached the kernel"
             exit 1
           fi
-          if grep "depends on axioms" verify.out | grep -v "propext, Classical.choice, Quot.sound"; then
-            echo "::error::unexpected axiom footprint"
+          total=$(grep -c "depends on axioms" verify.out)
+          exact=$(grep -cE "depends on axioms: \[propext, Classical.choice, Quot.sound\]$" verify.out)
+          if [ "$total" -ne "$exact" ]; then
+            echo "::error::$((total - exact)) footprint(s) are not exactly [propext, Classical.choice, Quot.sound]"
+            grep "depends on axioms" verify.out | grep -vE "depends on axioms: \[propext, Classical.choice, Quot.sound\]$" || true
             exit 1
           fi
           audited=$(grep -c "depends on axioms" verify.out)

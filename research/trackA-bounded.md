@@ -81,8 +81,9 @@ At the interior case the atoms are symmetric around `d`: writing
 ## 4. Certificates
 
 Each case carries a quadratic `q` with `q ≥ (x-d)⁺` on `[0, M]` and `E[q] = V*`,
-so the bound holds for **every** law with the stated moments, not only for
-two-atom laws. Attainment by the two-atom law then gives equality.
+so the bound holds for every **finitely supported** law with the stated moments,
+not only for two-atom laws (the measure-theoretic extension is not formalised).
+Attainment by the two-atom law then gives equality.
 
 ### I — interior
 
@@ -113,7 +114,7 @@ factors are non-negative on `[d, M]`. This is the boundary-term case.
 `μ - d` is not a supremum (see §0), and the clamp has only two ends. So the three
 cases plus the degenerate `σ² = 0` exhaust the parameter space by construction —
 no Carathéodory argument is needed, because each case's certificate already
-covers *all* laws.
+covers all **finitely supported** laws.
 
 ## 5. Worked example (rational, kernel-checked)
 
@@ -140,7 +141,7 @@ enumerated primal beyond `10⁻¹³`. Adversarial gate (`σ² = 0`, `σ² = μ(M
   Heijnen 1990) covers the problem; what is new here is the certificate
   bookkeeping and its formalisation.
 * The reduction (2.1)–(2.2) covers two-atom laws; the certificates are what lift
-  the bound to arbitrary laws. Case I's certificate is formalised; A and B are not.
+  the bound to arbitrary **finitely supported** laws (not to general measures). Case I's certificate is formalised; A and B are not.
 * No novelty claim: the mean/variance bounded-range literature (De Vylder–
   Goovaerts–De Pril 1982; Jansen–Haezendonck–Goovaerts 1986; Heijnen 1990) covers
   this problem. What is new here is only the explicit certificate bookkeeping.

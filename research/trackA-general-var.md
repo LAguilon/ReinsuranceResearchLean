@@ -30,7 +30,8 @@ never pinned to a ceiling.
 
 Identical to the bounded case (perfect square for the interior regime, boundary
 form `d(x-b₀)²/b₀²` for `a = 0`), and both majorise on all of `[0, ∞)`, so the
-bounds hold for every law with the stated moments, not only two-atom laws.
+bounds hold for every **finitely supported** law with the stated moments, not
+only two-atom laws; the measure-theoretic extension is not formalised.
 
 ## 4. Numerical check (Stage A)
 

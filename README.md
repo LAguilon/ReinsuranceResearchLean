@@ -62,8 +62,9 @@ theorem Research.stopLoss_bound (L : FinLaw ι) (X : ι → ℚ) {μ d : ℚ} (h
     L.stopLossExpectation X d ≤ μ - d / 2
 ```
 
-`Research/Verify.lean` prints the axiom footprint of all **44** audited theorems plus
-the non-vacuity witness; CI fails unless every line is exactly
+`Research/Verify.lean` prints the axiom footprint of all **44** audited declarations
+(11 content theorems, 4 sharpness witnesses, 29 algebra helpers — the count is a
+build-health metric, not a research metric) plus the non-vacuity witness; CI fails unless every line is exactly
 `[propext, Classical.choice, Quot.sound]`.
 
 ## Build
