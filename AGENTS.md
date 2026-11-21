@@ -3,6 +3,16 @@
 Research and formalisation agent instructions. These rules are binding on every
 change to this repository.
 
+## 0. Accountability (overrides convenience)
+
+Accuracy and intellectual honesty outrank speed and theorem count. Any claim in
+this repository — including prior agent output, documentation, issue text and
+theorem statements — may be audited, challenged and corrected. When a claim is
+broader than what is proved, correct it in place, downgrade its tag
+(`PROVED` → `PARTIAL`/`CONJECTURED`) and state the mathematical reason. Never
+silently delete an error; record it in the commit message and, if it was public,
+in the issue thread.
+
 ## 1. Scope
 
 Two tracks, one repository:
@@ -44,7 +54,23 @@ passes three sequential gates, in this order.
 
 * Translate the certificate mechanically: `nlinarith`, `positivity`, `ring`.
 * No new imports beyond what the existing files use unless justified in the PR
-  description.
+  description. The library uses a narrow import set, not `import Mathlib`; a
+  broad import is a build-time regression (18 256 → 2 080 jobs) and must be
+  rejected in review.
+* Every main theorem ships with a **non-vacuity witness**: an instantiation at
+  concrete rational data, checked in `Research/Verify.lean`, proving the
+  hypotheses are simultaneously satisfiable.
+
+### Adversarial falsification (gate before any `PROVED`/`REPRODUCED` tag)
+
+Before tagging, try to break the formula:
+
+* boundary limits `d → 0`, `d → μ`, `d → M`, `σ² → 0`, `σ² → μ(M-μ)`;
+* degenerate two-point laws and atoms sitting exactly on `d`, `0`, `M`;
+* randomised search over admissible `(μ, σ², d)` with the dual certificate
+  re-checked by dense sampling;
+* an explicit numerical duality gap is a failed certificate: report it, do not
+  average it away.
 
 ## 3. Epistemic status gate
 
@@ -61,6 +87,11 @@ tag:
 Check `LITERATURE.md` before tagging. Never present a classical moment bound as
 novel. When a theorem is classical, cite the original authors by name and DOI.
 
+**Public errata rule.** An error discovered after publication is corrected in
+place with a dated note in the file, a commit message that says what was wrong,
+and — when the claim was stated in an issue or release — a correcting comment
+there. A correction is never a silent edit.
+
 ## 4. Hypothesis freeze
 
 Once a theorem's parameter domain is stated (e.g. `0 ≤ d ≤ M`,
@@ -70,7 +101,8 @@ explicitly and state the split in the theorem name.
 
 ## 5. Axiom and build discipline
 
-* Zero `sorry`, `admit`, or custom `axiom`.
+* Zero `sorry`, `admit`, `native_decide`, or custom `axiom` (`native_decide`
+  reaches `Lean.trustCompiler` and is treated as an escape hatch).
 * Every main theorem is followed by `#print axioms <name>`, and the output must
   be exactly `propext`, `Classical.choice`, `Quot.sound`.
 * CI enforces a zero-`sorry`/`admit`/`axiom` grep; a red build blocks publication.
@@ -95,7 +127,12 @@ explicitly and state the split in the theorem name.
   `research/` with a `CONJECTURED` tag, proofs live in `Research/`.
 * Commit after each gate with a message naming the stage (`Stage A`, `Stage B`,
   `Stage C`) and the issue number.
-* Push only when `lake build` is green and the zero-`sorry` gate passes.
+* Push only when `lake build` is green, `Research/Verify.lean` prints the exact
+  three-axiom footprint for every theorem, and the zero-`sorry` gate passes.
+* Never push unverified `.lean` changes to `main`: work on a feature branch
+  (`fix/*`, `feat/*`), verify locally, then merge.
+* Use `Closes #<n>` only when **every** regime of that issue is kernel-checked;
+  otherwise `Refs #<n>`.
 * Scan for credentials before every push; this repository is public.
 * Never publish third-party PDFs or licensed datasets; cite DOIs instead.
 
