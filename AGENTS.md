@@ -183,3 +183,14 @@ explicitly and state the split in the theorem name.
    150-line assembly before the first `lake build`.
 4. **Continuous run.** Do not emit status messages mid-queue; only report when the
    queue is done or every remaining item is genuinely blocked.
+
+### 9c. Assembly rules (2026-11-21)
+
+1. **45-line theorem cap.** No assembly theorem over ~45 lines. Split multi-regime
+   proofs into standalone branch lemmas (≤ 40 lines) plus a short dispatcher. If a
+   lemma hits the cap, split it or pivot to the next milestone — do not stop.
+2. **No blind `subst`.** `subst h` on `h : d = M` eliminates `M`; use `rw [h]`.
+3. **Named arguments** on multi-hypothesis calls (`(hμ := …) (hd := …)`).
+4. **No opaque `set` before `rw`** with external lemmas; unfold first.
+5. **Explicit slope rewrite** (`field_simp; ring`) before `nlinarith` on a slope
+   side condition.

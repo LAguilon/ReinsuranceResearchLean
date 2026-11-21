@@ -4,3 +4,4 @@ import Research.StopLossBounded
 import Research.Real.Sqrt
 import Research.StopLoss.BoundedReal
 import Research.Real.SqrtEndpoints
+import Research.StopLoss.BoundedUnified

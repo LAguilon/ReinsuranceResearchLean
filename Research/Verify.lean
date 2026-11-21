@@ -15,6 +15,7 @@ import Research.StopLossBounded
 import Research.Real.Sqrt
 import Research.StopLoss.BoundedReal
 import Research.Real.SqrtEndpoints
+import Research.StopLoss.BoundedUnified
 
 namespace Research
 
@@ -71,3 +72,7 @@ end Research
 #print axioms Research.f_lo
 #print axioms Research.coverage_atom_zero
 #print axioms Research.coverage_atom_top
+#print axioms Research.bound_interior_branch
+#print axioms Research.bound_atom_zero_branch
+#print axioms Research.bound_atom_top_branch
+#print axioms Research.stopLoss_bound_bounded
