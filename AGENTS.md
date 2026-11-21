@@ -155,7 +155,7 @@ explicitly and state the split in the theorem name.
    strategies (or exhausts a heartbeat), stop. Isolate the lemmas that do compile,
    record the exact algebraic blocker in `research/*.md`, tag the theorem
    `PARTIAL`, merge the clean progress, and move on. Do not thrash.
-3. **Build-time budget.** Keep `lake build` near the ~2 082-job / ~8.5 s baseline.
+3. **Build-time budget.** Keep `lake build` under **3 500 jobs / 15 s** (baseline 3 132 jobs / 7.6 s with the real tier; 2 082 without it). `Mathlib.Analysis.Real.Sqrt` must stay isolated inside `Research/Real/` so the rational tier keeps its cheap build.
    Split growing files into submodules (`Research/StopLoss/Interior.lean`,
    `Bounded.lean`, `GeneralVar.lean`, `Ruin.lean`) instead of accumulating one
    file of `nlinarith` calls.
