@@ -101,7 +101,7 @@ sign case split discharged by `split_ifs <;> linarith`.
 
 ## 9. Lean implementation
 
-* `Depunc/Bernoulli.lean` — definitions, `coupling_iff`, `convex`, `expCost`,
+* `Research/Bernoulli.lean` — definitions, `coupling_iff`, `convex`, `expCost`,
   `expCost_affine`, `expCost_mono`, both extremal theorems, `stopLoss`,
   `stopLoss_convex`, axiom audit.
 * Build: `lake build` (Mathlib `v4.36.0` required).

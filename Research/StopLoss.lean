@@ -28,7 +28,18 @@ Everything is stated for finite laws in `ℚ`, so the development is kernel-chec
 with exact arithmetic and no measure theory.  The measure-theoretic extension is
 a one-line monotonicity argument on top of `stopLoss_majorant`.
 -/
-import Mathlib
+import Mathlib.Data.Rat.Defs
+import Mathlib.Data.Finset.Basic
+import Mathlib.Algebra.Order.Field.Rat
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.SplitIfs
+import Mathlib.Tactic.FieldSimp
 
 namespace Research
 
