@@ -1,11 +1,18 @@
-# ReinsuranceResearchLean — insurance mathematics, formally verified
+# ReinsuranceResearchLean — classical stop-loss bounds in Lean 4
 
-## Status: closed experiment (2026-11-21)
+**What this is.** A closed experiment: a Lean 4 + Mathlib formalisation of classical
+mean/variance stop-loss bounds — `E[(X−d)⁺] ≤ (μ−d+√((μ−d)²+σ²))/2` and its
+two-point relatives — for finitely supported laws and for arbitrary probability
+spaces, plus a two-Bernoulli dependence-uncertainty pilot.
 
-This repository is a **closed experiment**, not an active project. Read this section
-before anything else.
+**Every result is classical.** Nothing here is new mathematics. See `LITERATURE.md`
+for the DOIs and `LEDGER.md` for exactly what was and was not searched.
 
-**What is machine-checked.** 44 declarations in Lean 4.36.0 + Mathlib, zero `sorry`,
+**What is not here.** No ruin probability is formalised in Lean. The Schmitter
+problem is not solved. No optimal-reinsurance theorem is proved. The dependence
+work is a two-point pilot, not the general transportation-polytope problem.
+
+**What is machine-checked.** 46 declarations in Lean 4.36.0 + Mathlib, zero `sorry`,
 zero custom axioms, every footprint exactly `propext, Classical.choice, Quot.sound`.
 The 11 that carry mathematical content:
 
@@ -58,13 +65,18 @@ The last command prints 44 lines; CI fails unless every one is exactly
 | `integral_stopLoss_le`: `[IsProbabilityMeasure P]`, `MemLp X 2 P`, `0 < s`, `s² = (μ−d)²+σ²`, `∫X = μ`, `∫X² = μ²+σ²` ⟹ `∫ (X−d)⁺ ≤ (μ−d+s)/2` | "the interior mean/variance stop-loss bound holds for arbitrary distributions on a probability space, not only finitely supported ones" | no `X ≥ 0` hypothesis; no upper bound `M`; **not** a supremum — any admissible `s` gives a bound; no sharpness in the insurance class |
 | `interior_majorant_all`: `4s(x−d)⁺ ≤ (x−d+s)²` for all real `x`, `s > 0` | "the pointwise certificate needs no support assumption" | nothing about integration |
 
-**Attainment caveat.** The measure-theoretic bound is attained exactly by the
-two-atom law `{d−r, d+r}` with `r = √((μ−d)²+σ²)`. For `μ=1, σ²=1, d=0.5` that law is
-`{−0.618034, 1.618034}` with masses `0.276393 / 0.723607`; it reproduces mean `1`,
-second moment `2`, and `E[(X−d)⁺] = 0.809016994 = (μ−d+r)/2` to machine precision.
-Because the lower atom is **negative**, this law is outside the insurance class
-`X ≥ 0`, where the supremum is the smaller `0.75`. The measure-theoretic theorem
-therefore says nothing about `X ≥ 0`.
+**Attainment, and how sharp it is.** The measure-theoretic bound is attained exactly
+by the two-atom law `{d−r, d+r}` with `r = √((μ−d)²+σ²)`. For `μ=1, σ²=1, d=0.5` that
+law is `{−0.618034, 1.618034}` with masses `0.276393 / 0.723607`; it reproduces mean
+`1`, second moment `2`, and `E[(X−d)⁺] = 0.809016994 = (μ−d+r)/2` to machine precision.
+
+The bound is **valid for every real-valued `X`, including the insurance class
+`X ≥ 0`** — a non-negative random variable is real-valued. What changes is sharpness:
+the attaining law above has a negative lower atom, so it is not admissible when
+`X ≥ 0`. The bound is sharp **iff** `d − r ≥ 0`; otherwise it is valid but loose.
+In the example `d − r = −0.618 < 0`, and the sharp non-negative value is `0.75`
+against `0.809`. For sharp constants in the class `X ≥ 0`, use the bounded and
+unbounded theorems in `Research/StopLoss/` (the `a = 0` case gives `μ(1−d/b₀)`).
 
 ## Contents of the audit
 
@@ -139,9 +151,10 @@ theorem Research.stopLoss_bound (L : FinLaw ι) (X : ι → ℚ) {μ d : ℚ} (h
     L.stopLossExpectation X d ≤ μ - d / 2
 ```
 
-`Research/Verify.lean` prints the axiom footprint of all **44** audited declarations
-(11 content theorems, 4 sharpness witnesses, 29 algebra helpers — the count is a
-build-health metric, not a research metric) plus the non-vacuity witness; CI fails unless every line is exactly
+`Research/Verify.lean` prints the axiom footprint of all **46** audited declarations
+(11 content theorems, 4 sharpness witnesses, 29 algebra helpers, plus the two
+measure-theoretic statements — the count is a build-health metric, not a research
+metric); CI fails unless every line is exactly
 `[propext, Classical.choice, Quot.sound]`.
 
 ## Build
@@ -149,13 +162,19 @@ build-health metric, not a research metric) plus the non-vacuity witness; CI fai
 ```bash
 lake update          # Mathlib v4.36.0
 lake exe cache get   # prebuilt oleans (~7 GB)
-lake build           # 3 140 jobs, ~2 s incremental after the cache
+lake build           # 7 224 jobs, ~8 s after the cache (measure module included)
 ```
 
-The library uses a **narrow import set** (rationals, `Finset`, big operators,
-`linarith`/`nlinarith`/`positivity`/`ring`/`split_ifs`), not `import Mathlib`. That
-cuts the build from 18 256 jobs to 2 080; adding a broad import again is a
-regression and should be rejected in review.
+The core (non-measure) tier still uses a **narrow import set** (rationals, `Finset`,
+big operators, `linarith`/`nlinarith`/`positivity`/`ring`/`split_ifs`) and builds in
+about 3 140 jobs. The measure-theoretic module `Research/Measure/StopLossMeasure.lean`
+needs `Mathlib.MeasureTheory`, which raises the **default** target to 7 224 jobs.
+
+I chose to update the numbers rather than split the measure module into its own
+`lean_lib`: splitting changes `lakefile.toml`, `Research.lean` and the CI invocation,
+whereas the honest number is a one-line change. The cost is recorded here rather than
+hidden, and a future contributor who wants a cheap core can move the module into
+`lean_lib ResearchMeasure` with no proof changes.
 
 ## Run the experiments
 
