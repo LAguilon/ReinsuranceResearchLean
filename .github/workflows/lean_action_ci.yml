@@ -46,8 +46,8 @@ jobs:
             exit 1
           fi
           audited=$(grep -c "depends on axioms" verify.out)
-          if [ "$audited" -lt 13 ]; then
-            echo "::error::expected at least 13 audited theorems, found $audited"
+          if [ "$audited" -lt 19 ]; then
+            echo "::error::expected at least 19 audited theorems, found $audited"
             exit 1
           fi
           echo "axiom audit clean: $audited theorems, all on propext/Classical.choice/Quot.sound"

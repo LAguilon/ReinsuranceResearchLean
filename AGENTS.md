@@ -144,3 +144,29 @@ explicitly and state the split in the theorem name.
 * Rationals for exact statements, reals only where the analysis requires them.
 * Experiments are dependency-free Python 3 with `from fractions import Fraction`
   where exactness matters.
+
+## 9. Self-sufficient execution and anti-stall protocol
+
+1. **No permission loops.** Do not ask "should I proceed to Stage C?" or "which
+   issue next?". Execute Stage A → Stage B → Stage C end to end and advance down
+   the roadmap queue automatically. Approval is assumed for research direction,
+   file layout, branches, PR merges once CI is green, and errata corrections.
+2. **Three-attempt tactic cap.** If a Lean proof fails after three distinct tactic
+   strategies (or exhausts a heartbeat), stop. Isolate the lemmas that do compile,
+   record the exact algebraic blocker in `research/*.md`, tag the theorem
+   `PARTIAL`, merge the clean progress, and move on. Do not thrash.
+3. **Build-time budget.** Keep `lake build` near the ~2 082-job / ~8.5 s baseline.
+   Split growing files into submodules (`Research/StopLoss/Interior.lean`,
+   `Bounded.lean`, `GeneralVar.lean`, `Ruin.lean`) instead of accumulating one
+   file of `nlinarith` calls.
+4. **Dual-certificate exhaustiveness.** When pointwise majorants `qᵢ ≥ f` cover a
+   partition of the parameter space, proving the partition is exhaustive proves
+   exhaustiveness over *all* laws, because expectation is linear and monotone.
+   Prefer this to Carathéodory or measure-theoretic machinery. Corollary: never
+   take a maximum over candidate *formulas*; the supremum is the smallest valid
+   upper bound, so candidates must be certified before they are compared.
+5. **Scientific accountability.** Correct any mathematical error, phantom regime
+   or overstated claim immediately, in code, docs, README and GitHub issues, and
+   keep the `PROVED` / `REPRODUCED` / `PARTIAL` / `CONJECTURED` tags exact at every
+   merge. This applies to instructions received from outside as well: verify
+   claims before adopting them.
