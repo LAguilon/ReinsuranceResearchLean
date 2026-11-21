@@ -33,7 +33,7 @@ it open.
 **Finite two-point case.** The union-bound argument giving
 `VaR_α(X+Y) ≤ VaR_α(X) + VaR_α(Y)` and the comonotone attainment are textbook
 material that follows from the sources above; the kernel-checked development in
-`Depunc/Bernoulli.lean` is therefore classified **`REPRODUCED`**, not new.
+`Research/Bernoulli.lean` is therefore classified **`REPRODUCED`**, not new.
 
 ## Track A — ruin theory / Schmitter problem (deferred to a later stage)
 
@@ -56,3 +56,26 @@ attainment, and asymptotic results are known for mixable marginals, but exact
 finite-`n` values are available only for special families. With the access available
 here this is recorded as `OPEN_CANDIDATE` for general marginals, **not** as a
 certified open problem.
+
+## Track A — bounded support and moment-constrained stop-loss bounds
+
+Audit date 2026-11-21, Crossref metadata. These are the classical sources behind
+the bounded-claims problem (Issue #4); the results in this repository are
+`REPRODUCED`, never novel.
+
+| Reference | DOI | Contribution |
+|---|---|---|
+| Taylor (1977), *Upper bounds on stop-loss premiums under constraints on claim size distribution*, Scand. Actuar. J. 1977, 94–105 | 10.1080/03461238.1977.10405631 | Early moment-constrained stop-loss bounds |
+| Goovaerts, De Vylder (1980), *Upper bounds on stop-loss premiums under constraints on claim size distributions as derived from representation theorems for distribution functions*, Scand. Actuar. J. 1980, 141–148 | 10.1080/03461238.1980.10408649 | Representation-theorem route to sharp bounds |
+| De Vylder, Goovaerts, De Pril (1982), *Bounds on modified stop-loss premiums in case of known mean and variance of the risk variable*, ASTIN Bulletin 13, 23–36 | 10.1017/s0515036100006917 | Mean/variance stop-loss bounds — the direct ancestor of `Research/StopLoss.lean` |
+| Jansen, Haezendonck, Goovaerts (1986), *Upper bounds on stop-loss premiums in case of known moments up to the fourth order*, Insurance Math. Econ. 5, 315–334 | 10.1016/0167-6687(86)90027-2 | Moment hierarchy; explains why three atoms suffice |
+| Broeckx, Goovaerts, De Vylder (1986), *Ordering of risks and ruin probabilities*, Insurance Math. Econ. 5, 35–39 | 10.1016/0167-6687(86)90005-3 | Stop-loss order and ruin probabilities — the propagation step |
+| Kaas, van Heerwaarden, Goovaerts (1988), *On stop-loss premiums for the individual model*, ASTIN Bulletin 18, 91–97 | 10.2143/ast.18.1.2014963 | Bounded-support extremal distributions |
+| Heijnen (1990), *Best upper and lower bounds on modified stop-loss premiums in case of known range, mode, mean and variance*, Insurance Math. Econ. 9, 207–220 | 10.1016/0167-6687(90)90035-c | Bounded range plus moments — closest to Issue #4 |
+| Kaas, van Heerwaarden (1992), *Stop-loss order, unequal means, and more dangerous distributions*, Insurance Math. Econ. 11, 71–77 | 10.1016/0167-6687(92)90089-t | Ordering with unequal means |
+| Genest, Marceau, Mesfioui (2002), *Upper stop-loss bounds for sums of possibly dependent risks with given means and variances*, Statist. Probab. Lett. 57, 33–41 | 10.1016/s0167-7152(02)00039-1 | Multivariate mean/variance bounds |
+
+**Unverified citation.** Hürlimann (1998) is named in the task brief but did not
+resolve to a unique record in this audit; it is therefore **not** cited here until
+a DOI is confirmed. Absence from this table means "not verified", not "not
+relevant".

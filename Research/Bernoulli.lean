@@ -20,9 +20,20 @@ programme: in general the feasible set is a transportation polytope and the
 extremal couplings are not the obvious ones; here it is a segment, so the
 optimisation collapses to its endpoints.
 -/
-import Mathlib
+import Mathlib.Data.Rat.Defs
+import Mathlib.Data.Finset.Basic
+import Mathlib.Algebra.Order.Field.Rat
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.SplitIfs
+import Mathlib.Tactic.FieldSimp
 
-namespace Depunc
+namespace Research
 
 /-- A coupling of two Bernoulli risks with marginals `p`, `q` and
 `t = P(X = 1, Y = 1)`, encoded by the three independent constraints on the
@@ -151,14 +162,14 @@ theorem stopLoss_convex (d : ℚ) :
   unfold stopLoss
   split_ifs <;> linarith
 
-end Depunc
+end Research
 
 /-! ## Axiom audit
 
 The whole file must rest only on Lean's three standard axioms. -/
 
-#print axioms Depunc.Coupling.iff
-#print axioms Depunc.Coupling.expCost_mono
-#print axioms Depunc.Coupling.expCost_le_comonotone
-#print axioms Depunc.Coupling.countermonotone_le_expCost
-#print axioms Depunc.stopLoss_convex
+#print axioms Research.Coupling.iff
+#print axioms Research.Coupling.expCost_mono
+#print axioms Research.Coupling.expCost_le_comonotone
+#print axioms Research.Coupling.countermonotone_le_expCost
+#print axioms Research.stopLoss_convex

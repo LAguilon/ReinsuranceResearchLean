@@ -16,7 +16,8 @@ this is the sharp upper price of a non-proportional layer when only the first tw
 moments of the claim size are known — the information an underwriter typically
 has. Because ruin probabilities in the Cramér–Lundberg model are ordered by
 stop-loss order, a bound of this type propagates to a bound on the ruin
-probability, which is exactly the mechanism behind the Schmitter problem.
+probability. That propagation is the *mechanism* behind the Schmitter problem —
+but see §10a: it yields a valid bound, not sharpness.
 
 ## 3. What was previously known
 
@@ -95,6 +96,19 @@ lake build            # 18256 jobs, green
 
 `twoPoint_attains` is checked with `Bool`-indexed atoms so the two-point law is
 literal data, not a hypothesis.
+
+## 10a. What the envelope does *not* give (sharpness caveat)
+
+The pointwise envelope `d ↦ sup E[(X-d)⁺]` is attained by a different extremal
+law at each retention: `{0, 2μ}` for `d ≤ μ`, and a `d`-dependent two-point law
+for `d > μ`. No single claim distribution attains the envelope simultaneously for
+all `d ≥ 0`.
+
+Consequently, substituting the envelope into stop-loss monotonicity of `ψ` gives a
+**valid upper bound** on `sup ψ(u)`, but **not** the sharp Schmitter supremum.
+Sharpness requires optimising over claim distributions *jointly across all
+retentions*, which is the actual open problem. Any statement in this repository
+that reads as "sharp ruin bound" is to be corrected on sight.
 
 ## 10. What remains unresolved
 

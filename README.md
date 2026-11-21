@@ -6,23 +6,41 @@ Lean 4 + Mathlib formalisation of extremal results in insurance mathematics.
   marginals and unknown dependence. Pilot: the two-point (Bernoulli) case, where
   the coupling set is a segment and the optimisation over dependence is exactly
   solvable.
-* **Track A — ruin theory / Schmitter problem.** Entry point: sharp stop-loss
-  bounds under mean and variance constraints, proved by an explicit dual
-  certificate.
+* **Track A — ruin theory / Schmitter problem.** Entry point: stop-loss bounds
+  under mean and variance constraints, proved by an explicit dual certificate.
 
-**Status labels: `REPRODUCED`** — classical results, independently formalised.
-Nothing here is claimed as new; see `LITERATURE.md` for the audit and its limits.
+## Status of every result
+
+| Result | File | Tag |
+|---|---|---|
+| Feasible couplings of two Bernoulli risks form the interval `[max 0 (p+q-1), min p q]` | `Research/Bernoulli.lean` | `REPRODUCED` |
+| Comonotone coupling maximises / countermonotone minimises `E[φ(X+Y)]` for convex `φ` | `Research/Bernoulli.lean` | `REPRODUCED` |
+| `E[(X-d)⁺] ≤ μ - d/2` when `Var X = μ²`, `0 ≤ d ≤ μ` | `Research/StopLoss.lean` | `REPRODUCED` |
+| Bounded claims on `[0, M]`: four-regime partition (Stage A/B) | `research/trackA-bounded.md` | `CONJECTURED` until kernel-checked |
+
+Nothing here is claimed as novel. `LITERATURE.md` records the audit, its date and
+its limits (no keyword-search access; fetch-only citation verification).
+
+**Sharpness caveat for the Schmitter problem.** The pointwise stop-loss envelope
+is attained by a *different* extremal law at each retention `d`, so substituting it
+into stop-loss monotonicity of the ruin probability gives a **valid upper bound**
+on `sup ψ(u)`, **not** the sharp Schmitter supremum. See
+`research/trackA-stop-loss-bounds.md` §10a.
 
 ## Contents
 
 | Path | What it is |
 |---|---|
-| `Research/Bernoulli.lean` | Couplings of two Bernoulli risks; feasible interval; convex-order monotonicity; extremal couplings; axiom audit |
-| `Research/StopLoss.lean` | Sharp stop-loss bound `E[(X-d)⁺] ≤ μ - d/2` under `E[X]=μ`, `Var X = μ²`; quadratic dual certificate; two-point extremal law |
+| `Research/Bernoulli.lean` | Couplings of two Bernoulli risks; feasible interval; convex-order monotonicity; extremal couplings |
+| `Research/StopLoss.lean` | Stop-loss bound under `E[X]=μ`, `Var X = μ²`; quadratic dual certificate; two-point extremal law |
+| `Research/Verify.lean` | Imports every public module, prints the axiom footprint of each theorem, and instantiates the main bound at concrete data (non-vacuity) |
 | `research/trackB-dependence-uncertainty.md` | Track B research note |
-| `research/trackA-stop-loss-bounds.md` | Track A research note |
-| `LITERATURE.md` | Audited references with DOIs and status labels (audit date 2026-11-21) |
-| `experiments/bernoulli_check.py` | Exact-rational verification of the formalised claims, plus the three-point exploration |
+| `research/trackA-stop-loss-bounds.md` | Track A research note, with the sharpness caveat |
+| `research/trackA-bounded.md` | Bounded-claims regime partition and certificates (Stage B) |
+| `LITERATURE.md` | Audited references with DOIs and status labels |
+| `experiments/bernoulli_check.py` | Exact-rational verification of the Track B claims, plus a three-point exploration |
+| `experiments/bounded_stoploss_check.py` | Stage A for bounded claims: closed-form candidates versus enumerated primal |
+| `AGENTS.md` | Binding research and formalisation rules |
 
 ## Headline statements (kernel-checked)
 
@@ -33,43 +51,42 @@ theorem Coupling.expCost_le_comonotone
     (h : Coupling p q t) :
     expCost φ p q t ≤ expCost φ p q (min p q)
 
-theorem Coupling.countermonotone_le_expCost
-    (φ : ℚ → ℚ) {p q t : ℚ} (hconv : 0 ≤ φ 2 - 2 * φ 1 + φ 0) (h : Coupling p q t) :
-    expCost φ p q (max 0 (p + q - 1)) ≤ expCost φ p q t
-```
-
-and, for the stop-loss development:
-
-```lean
 theorem Research.stopLoss_bound (L : FinLaw ι) (X : ι → ℚ) {μ d : ℚ} (hμ : 0 < μ)
     (hd : 0 ≤ d) (hdμ : d ≤ μ) (hX : ∀ i, 0 ≤ X i)
     (hmean : L.mean X = μ) (hsecond : L.secondMoment X = 2 * μ ^ 2) :
     L.stopLossExpectation X d ≤ μ - d / 2
 ```
 
-`#print axioms` on every theorem reports only `propext`, `Classical.choice`,
-`Quot.sound` — no `sorry`, no custom axioms.
+`Research/Verify.lean` prints the axiom footprint of all nine theorems plus the
+non-vacuity witness; CI fails unless every line is exactly
+`[propext, Classical.choice, Quot.sound]`.
 
 ## Build
 
 ```bash
 lake update          # Mathlib v4.36.0
 lake exe cache get   # prebuilt oleans (~7 GB)
-lake build
+lake build           # 2 080 jobs, ~10 s after the cache
 ```
+
+The library uses a **narrow import set** (rationals, `Finset`, big operators,
+`linarith`/`nlinarith`/`positivity`/`ring`/`split_ifs`), not `import Mathlib`. That
+cuts the build from 18 256 jobs to 2 080; adding a broad import again is a
+regression and should be rejected in review.
 
 ## Run the experiments
 
 ```bash
 python3 experiments/bernoulli_check.py
+python3 experiments/bounded_stoploss_check.py
 ```
-No third-party dependencies; exact rational arithmetic throughout.
+No third-party dependencies; exact rational arithmetic where it matters.
 
 ## How to contribute
 
-Open an issue with the `research-question` or `counterexample` label. Claims must
-carry a status label from `LITERATURE.md`; unproved statements stay out of
-`Depunc/`.
+Open an issue with the `research-question` or `counterexample` label. Every claim
+carries one of `PROVED`, `REPRODUCED`, `PARTIAL`, `CONJECTURED`. Unproved
+statements stay out of `Research/`. See `AGENTS.md` for the three-stage pipeline.
 
 ## Licence
 
