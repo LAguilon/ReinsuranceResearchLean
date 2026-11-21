@@ -136,8 +136,10 @@ theorem bound_atom_top_branch (L : FinLawR ι) (X : ι → ℝ) {M μ σ2 d : �
 
 #print axioms Research.bound_atom_top_branch
 
-/-- **Unified bounded-claims bound.**  Over the closed feasibility region, every
-finite law supported in `[0, M]` with the stated moments satisfies
+/-- **Unified bounded-claims bound.**  Scope: finitely supported laws
+(`FinLawR`) supported in `[0, M]`; the general-law extension is not formalised.
+
+Over the closed feasibility region, every such law with the stated moments satisfies
 `E[(X-d)⁺] ≤ max 0 (f A σ² (clamp(s*, σ²/(M-μ), μ)))`. -/
 theorem stopLoss_bound_bounded (L : FinLawR ι) (X : ι → ℝ) {M μ σ2 d : ℝ}
     (hM : 0 < M) (hμ0 : 0 ≤ μ) (hμM : μ ≤ M) (hd0 : 0 ≤ d) (hdM : d ≤ M)

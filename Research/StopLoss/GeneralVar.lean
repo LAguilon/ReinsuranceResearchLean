@@ -67,7 +67,8 @@ theorem bound_unbounded_atom_zero (L : FinLawR ι) (X : ι → ℝ) {μ σ2 d : 
   rw [hval] at hbound
   exact le_trans hbound (le_max_right 0 _)
 
-/-- **General-σ² unbounded stop-loss bound.** -/
+/-- **General-σ² unbounded stop-loss bound.**  Scope: finitely supported laws
+(`FinLawR`); no measure-theoretic extension is formalised. -/
 theorem stopLoss_bound_unbounded (L : FinLawR ι) (X : ι → ℝ) {μ σ2 d : ℝ}
     (hμ : 0 < μ) (hσ : 0 < σ2) (hd0 : 0 ≤ d) (hone : L.IsProbability) (hX : ∀ i, 0 ≤ X i)
     (hmean : L.mean X = μ) (hsecond : L.secondMoment X = μ ^ 2 + σ2) :

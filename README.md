@@ -62,8 +62,8 @@ theorem Research.stopLoss_bound (L : FinLaw ι) (X : ι → ℚ) {μ d : ℚ} (h
     L.stopLossExpectation X d ≤ μ - d / 2
 ```
 
-`Research/Verify.lean` prints the axiom footprint of all nine theorems plus the
-non-vacuity witness; CI fails unless every line is exactly
+`Research/Verify.lean` prints the axiom footprint of all **44** audited theorems plus
+the non-vacuity witness; CI fails unless every line is exactly
 `[propext, Classical.choice, Quot.sound]`.
 
 ## Build
@@ -71,7 +71,7 @@ non-vacuity witness; CI fails unless every line is exactly
 ```bash
 lake update          # Mathlib v4.36.0
 lake exe cache get   # prebuilt oleans (~7 GB)
-lake build           # 2 080 jobs, ~10 s after the cache
+lake build           # 3 140 jobs, ~2 s incremental after the cache
 ```
 
 The library uses a **narrow import set** (rationals, `Finset`, big operators,

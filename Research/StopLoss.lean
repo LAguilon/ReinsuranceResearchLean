@@ -104,7 +104,10 @@ theorem stopLoss_majorant {μ d x : ℚ} (hμ : 0 < μ) (hd : 0 ≤ d) (hdμ : d
     have hsq : 0 ≤ d * (x - 2 * μ) ^ 2 := by positivity
     nlinarith [hsq]
 
-/-- **Sharp stop-loss bound.**  For any finite law on `[0, ∞)` with `E[X] = μ` and
+/-- **Sharp stop-loss bound.**  Scope: finitely supported laws (`FinLaw`); the
+measure-theoretic extension is not formalised.
+
+For any finite law on `[0, ∞)` with `E[X] = μ` and
 `E[X²] = 2μ²` (i.e. `Var X = μ²`), and any `0 ≤ d ≤ μ`:
 
   `E[(X - d)⁺] ≤ μ - d/2`. -/

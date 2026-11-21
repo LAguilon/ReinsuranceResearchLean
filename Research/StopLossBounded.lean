@@ -56,7 +56,7 @@ theorem interior_majorant {s d x : ℚ} (_hs : 0 < s) :
   · rw [max_eq_left (by linarith)]
     nlinarith [sq_nonneg (x - d - s)]
 
-/-- **Interior bound.** -/
+/-- **Interior bound.**  Scope: finitely supported laws (`FinLaw`). -/
 theorem stopLoss_bound_interior (L : FinLaw ι) (X : ι → ℚ) {μ d s σ2 : ℚ}
     (hs : 0 < s) (hsq : s ^ 2 = (μ - d) ^ 2 + σ2)
     (hone : L.IsProbability)
@@ -132,7 +132,7 @@ theorem atomZero_majorant {b0 d x : ℚ} (hb0 : 0 < b0) (hd : 0 ≤ d) (h2d : 2 
   · rw [max_eq_left (by linarith)]
     nlinarith [mul_nonneg hd (sq_nonneg (x - b0))]
 
-/-- **Case A bound.** -/
+/-- **Case A bound.**  Scope: finitely supported laws (`FinLaw`). -/
 theorem stopLoss_bound_atom_zero (L : FinLaw ι) (X : ι → ℚ) {μ d b0 σ2 : ℚ}
     (hμ : 0 < μ) (hb0 : μ * b0 = μ ^ 2 + σ2) (hb0pos : 0 < b0)
     (h2d : 2 * d ≤ b0) (hd : 0 ≤ d) (_hone : L.IsProbability)
@@ -203,7 +203,7 @@ theorem atomTop_majorant {M d a1 c x : ℚ} (hc : 0 < c) (hxM : x ≤ M)
   · rw [max_eq_left (by linarith)]
     linarith [hfac]
 
-/-- **Case B bound.** -/
+/-- **Case B bound.**  Scope: finitely supported laws (`FinLaw`). -/
 theorem stopLoss_bound_atom_top (L : FinLaw ι) (X : ι → ℚ) {μ d a1 c σ2 M : ℚ}
     (hM : 0 < M) (ha1 : 0 ≤ a1) (ha1d : a1 ≤ d) (hdM : d ≤ M)
     (hc : 0 < c) (hcM : c * (M - a1) ^ 2 = M - d)

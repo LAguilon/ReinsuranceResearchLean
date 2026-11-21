@@ -26,7 +26,7 @@ theorem interior_majorant_R {s d x : ℝ} (_hs : 0 < s) :
   · rw [max_eq_left (by linarith)]
     nlinarith [sq_nonneg (x - d - s)]
 
-/-- Interior bound over `ℝ`. -/
+/-- Interior bound over `ℝ`.  Scope: finitely supported laws (`FinLawR`). -/
 theorem stopLoss_bound_interior_R (L : FinLawR ι) (X : ι → ℝ) {μ d s σ2 : ℝ}
     (hs : 0 < s) (hsq : s ^ 2 = (μ - d) ^ 2 + σ2)
     (hone : L.IsProbability)
