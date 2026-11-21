@@ -20,6 +20,7 @@ Lean 4 + Mathlib formalisation of extremal results in insurance mathematics.
 | Bounded claims `[0,M]`, case `a=0`: `E[(X-d)⁺] ≤ μ(1-d/b₀)` | `Research/StopLossBounded.lean` | `REPRODUCED` |
 | Bounded claims `[0,M]`, case `b=M`: `E[(X-d)⁺] ≤ (M-d)(μ-a₁)/(M-a₁)` | `Research/StopLossBounded.lean` | `REPRODUCED` |
 | Bounded claims `[0,M]`: unified `stopLoss_bound_bounded` over the full closed domain | `Research/StopLoss/BoundedUnified.lean` | `REPRODUCED` |
+| Unbounded `[0,∞)`, general `σ²`: `stopLoss_bound_unbounded` | `Research/StopLoss/GeneralVar.lean` | `REPRODUCED` |
 
 Nothing here is claimed as novel. `LITERATURE.md` records the audit, its date and
 its limits (no keyword-search access; fetch-only citation verification).
