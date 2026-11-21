@@ -1,5 +1,66 @@
 # ReinsuranceResearchLean — insurance mathematics, formally verified
 
+## Status: closed experiment (2026-11-21)
+
+This repository is a **closed experiment**, not an active project. Read this section
+before anything else.
+
+**What is machine-checked.** 44 declarations in Lean 4.36.0 + Mathlib, zero `sorry`,
+zero custom axioms, every footprint exactly `propext, Classical.choice, Quot.sound`.
+The 11 that carry mathematical content:
+
+| Statement | Tag |
+|---|---|
+| Two Bernoulli couplings are feasible iff `max 0 (p+q-1) ≤ t ≤ min p q` | REPRODUCED |
+| Comonotone maximises / countermonotone minimises `E[φ(X+Y)]` for convex `φ` | REPRODUCED |
+| `E[(X−d)⁺] ≤ μ − d/2` when `Var X = μ²`, `0 ≤ d ≤ μ` | REPRODUCED |
+| Bounded `[0,M]`: three case bounds (interior, `a=0`, `b=M`) | REPRODUCED |
+| Bounded `[0,M]`: unified `stopLoss_bound_bounded` over the closed domain | REPRODUCED |
+| Unbounded `[0,∞)`: `stopLoss_bound_unbounded`, general `σ²` | REPRODUCED |
+| `σ² = 0 ⇒ E[(X−d)⁺] = (μ−d)⁺` | REPRODUCED |
+| `f` is maximised at `s*` (clamp lemma) | REPRODUCED |
+
+**What is classical.** All of it. The mean/variance stop-loss bounds are due to
+De Vylder–Goovaerts–De Pril (1982), Jansen–Haezendonck–Goovaerts (1986), Heijnen
+(1990), Genest–Marceau–Mesfioui (2002); the dependence-uncertainty results to
+Embrechts–Puccetti–Rüschendorf (2013) and Puccetti–Wang–Wang (2013). Citations are
+metadata-verified only (Crossref/OpenAlex); **no paper was read**. See `LEDGER.md`
+for the exact searches and `LITERATURE.md` for the DOIs.
+
+**What was wrong, and corrected.** (1) A "kink regime" claiming `sup = μ − d` was
+a phantom: `(x−d)⁺ ≥ x−d`, so `μ−d` is Jensen's *lower* bound. (2) The interior
+certificate uses `r = √((μ−d)²+σ²)`, not `s* = (μ−d)+r`; conflating them produced
+two failed assemblies. (3) Prose said bounds hold for "every law" while the Lean
+statements are finite-support. (4) A claimed ruin identity
+`ψ(u) = (λ/c)E[(X_I−u)⁺]` is false in general — it is the first term of the renewal
+equation (see Issue #2).
+
+**What is NOT shown.** No ruin probability is formalised in Lean. The Schmitter
+problem is not solved. The stop-loss *envelope* is a valid but **non-sharp** upper
+bound on `sup ψ`. The measure-theoretic version of the bound is **not** completed
+(`Research/Measure/StopLossMeasure.lean` proves only the pointwise majorant).
+Nothing here is novel, and no claim of novelty is made anywhere.
+
+**Verify in one command.**
+
+```bash
+lake exe cache get && lake build && lake env lean Research/Verify.lean
+```
+
+The last command prints 44 lines; CI fails unless every one is exactly
+`[propext, Classical.choice, Quot.sound]`.
+
+## Contents of the audit
+
+| Group | Count | Names |
+|---|---|---|
+| Content | 11 | `Coupling.iff`, `Coupling.expCost_le_comonotone`, `Coupling.countermonotone_le_expCost`, `stopLoss_bound`, `stopLoss_bound_interior`, `stopLoss_bound_atom_zero`, `stopLoss_bound_atom_top`, `stopLoss_bound_bounded`, `stopLoss_bound_unbounded`, `stopLoss_variance_zero`, `f_le_clamp` |
+| Witnesses | 4 | `twoPoint_attains`, `interior_sharp`, `atomZero_sharp`, `atomTop_sharp` |
+| Helpers | 29 | `cells_nonneg`, `cells_sum`, `Coupling.convex`, `expCost_affine`, `expCost_mono`, `comonotone_feasible`, `countermonotone_feasible`, `stopLoss_convex`, `stopLoss_majorant`, `sum_quadratic` (ℚ, ℝ), `sum_quadratic_const` (ℚ, ℝ), `interior_majorant` (ℚ, ℝ), `atomZero_majorant` (ℚ, ℝ), `atomTop_majorant` (ℚ, ℝ), `sStar_sq`, `sStar_gt`, `sStar_pos`, `sStar_sub_A_nonneg`, `two_mul_le_sStar`, `f_diff_num`, `f_inc`, `f_dec`, `f_sStar`, `f_mu`, `f_lo`, `coverage_atom_zero`, `coverage_atom_top`, `stopLoss_bound_nonvacuous`, `bound_interior_branch`, `bound_atom_zero_branch`, `bound_atom_top_branch`, `bound_unbounded_interior`, `bound_unbounded_atom_zero` |
+
+(The helper row lists 29 distinct statements; several appear twice, once over `ℚ`
+and once over `ℝ`, and are counted once in the 44.)
+
 Lean 4 + Mathlib formalisation of extremal results in insurance mathematics.
 
 * **Track B — dependence uncertainty.** Extremal risk aggregation with known
