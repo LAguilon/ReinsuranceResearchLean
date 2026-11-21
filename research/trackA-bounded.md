@@ -1,9 +1,11 @@
 # Bounded claims on `[0, M]` — regime partition and dual certificates (Stage B)
 
 Status: **`PARTIAL`** — the four regimes below are numerically mapped and the
-certificates are exact, but only the interior regime (R2) is intended for kernel
-checking in Stage C; R1 has *no* quadratic certificate (proved below), and R3/R4
-are boundary-contact cases whose certificates are derived but not yet formalised.
+certificates are exact. The interior regime (R2) is **kernel-checked** in
+`Research/StopLossBounded.lean` (`stopLoss_bound_interior`, plus the rational
+sharpness witness `interior_sharp`), so R2 is `REPRODUCED`. R1 has *no* quadratic
+certificate (proved below); R3/R4 are boundary-contact cases whose certificates are
+derived but not yet formalised.
 Track A, Issue #4. Date: 2026-11-21.
 
 ## 1. Problem
