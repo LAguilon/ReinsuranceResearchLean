@@ -21,7 +21,8 @@ Two tracks, one repository:
   constraints (Schmitter problem family).
 * **Track B** — dependence uncertainty for risk aggregation with known marginals.
 
-Track A currently has priority.
+Track A had priority. **The repository is a closed experiment (2026-11-21)** — see
+§10. Do not start new research here without an explicit written request.
 
 ## 2. Three-stage certificate-first pipeline (mandatory)
 
@@ -38,6 +39,9 @@ passes three sequential gates, in this order.
   parameter boundaries between regimes.
 * Report the numerical duality gap for every test configuration. A configuration
   with a non-zero gap is not understood yet; do not carry it into Stage B.
+* A quadratic dual need not exist. If the extremal majorant is piecewise linear or
+  the slack is a boundary term, certify with that object and say so; a non-zero
+  quadratic gap is not by itself a failure of the bound.
 * State the arithmetic used. Float64 results are evidence, not proof; exact
   rationals are required for anything quoted as a constant.
 
@@ -54,12 +58,16 @@ passes three sequential gates, in this order.
 
 * Translate the certificate mechanically: `nlinarith`, `positivity`, `ring`.
 * No new imports beyond what the existing files use unless justified in the PR
-  description. The library uses a narrow import set, not `import Mathlib`; a
-  broad import is a build-time regression (18 256 → 2 080 jobs) and must be
-  rejected in review.
+  description. The **core tier** uses a narrow import set, not `import Mathlib`; a
+  broad import there is a build-time regression (18 256 → 3 140 jobs) and must be
+  rejected in review. The **measure tier** (`Research/Measure/`) may import
+  `Mathlib.MeasureTheory`; it is isolated in its own directory and raises the
+  default target from 3 140 to 7 224 jobs, which is recorded in the README rather
+  than hidden.
 * Every main theorem ships with a **non-vacuity witness**: an instantiation at
-  concrete rational data, checked in `Research/Verify.lean`, proving the
-  hypotheses are simultaneously satisfiable.
+  concrete data (rational where the tier allows it), checked in
+  `Research/Verify.lean`, proving the hypotheses are simultaneously satisfiable.
+  Where the statement is measure-theoretic and no witness is written, say so.
 
 ### Adversarial falsification (gate before any `PROVED`/`REPRODUCED` tag)
 
@@ -79,13 +87,24 @@ tag:
 
 | Tag | Meaning |
 |---|---|
-| `PROVED` | Novel result, kernel-checked |
+| `PROVED` | Novel result, kernel-checked, with a `LEDGER.md` row listing the searches performed |
 | `REPRODUCED` | Known in the literature, kernel-checked here |
 | `PARTIAL` | Kernel-checked only on a restricted parameter regime |
 | `CONJECTURED` | Numerical or analytic evidence only |
+| `STATUS_UNCERTAIN` | Literature status unknown; the statement may or may not be known |
 
 Check `LITERATURE.md` before tagging. Never present a classical moment bound as
 novel. When a theorem is classical, cite the original authors by name and DOI.
+
+**Prior-art rule.** Every claim about what exists in the literature points to a row
+in `LEDGER.md`. Allowed phrasing: "no existing formalisation was found by the
+searches listed in `LEDGER.md` (limited search; absence of evidence is not evidence
+of absence)". The words *novel*, *first*, *discovery*, *breakthrough* and *solves*
+are not used in public text.
+
+**Fidelity table rule.** Every public theorem ships with three columns: the formal
+statement (Lean signature), the prose claim it licenses, and what it does **not**
+claim. The third column is mandatory and must be non-empty.
 
 **Public errata rule.** An error discovered after publication is corrected in
 place with a dated note in the file, a commit message that says what was wrong,
@@ -103,23 +122,27 @@ explicitly and state the split in the theorem name.
 
 * Zero `sorry`, `admit`, `native_decide`, or custom `axiom` (`native_decide`
   reaches `Lean.trustCompiler` and is treated as an escape hatch).
-* Every main theorem is followed by `#print axioms <name>`, and the output must
-  be exactly `propext`, `Classical.choice`, `Quot.sound`.
+* Every main theorem is registered in `Research/Verify.lean` with
+  `#print axioms <name>` (not inline in the source), and the output must be
+  exactly `propext`, `Classical.choice`, `Quot.sound`. The CI floor must equal the
+  number of registered declarations (currently 46).
 * CI enforces a zero-`sorry`/`admit`/`axiom` grep; a red build blocks publication.
 * Keep `lake build` fast: finite sums, `Finset`, `ℚ` or `ℝ`. Do not import
-  continuous-time stochastic processes or Bochner integration for results that
-  are finite-dimensional.
+  continuous-time stochastic processes, and do not import Bochner integration for
+  finite-dimensional results. The single sanctioned exception is
+  `Research/Measure/`, where the measure-theoretic statement is the point.
 
-## 6. Track A roadmap (order is binding)
+## 6. Track A roadmap (historical order; the repository is closed)
 
-1. **Issue #4** — bounded claims `X ∈ [0, M]` with known `(μ, σ²)`; regime
-   partition and sharp bounds. *Current priority.*
-2. **Randomised-surplus ruin bound** — Albrecher–Araujo-Acuña (2021), connecting
-   `StopLoss.lean` to `ψ(u)` through finite mixtures of stop-loss transforms.
-3. **Issue #1** — general-`σ²` three-atom closed form on `[0, ∞)`
-   (Genest–Marceau–Mesfioui 2002).
-4. **Issues #2, #3** — full Cramér–Lundberg stop-loss monotonicity; LP duality for
-   the transportation polytope.
+1. ~~**Issue #4** — bounded claims `X ∈ [0, M]`.~~ **Done** (PRs #11, #12): unified
+   `stopLoss_bound_bounded`, issue closed.
+2. **Randomised-surplus ruin bound** — Albrecher–Araujo–Acuña (2021). **Not started.**
+   Blocked on a modelling decision (pin the third moment via a family, or carry a
+   three-moment hypothesis); see Issue #2.
+3. ~~**Issue #1** — general-`σ²` closed form on `[0, ∞)`.~~ **Done** (PR #13):
+   `stopLoss_bound_unbounded`; the extremal law is **two**-atom, not three.
+4. **Issues #2, #3** — Cramér–Lundberg stop-loss monotonicity; LP duality for the
+   transportation polytope. **Not started.**
 
 ## 7. Publication workflow
 
@@ -139,8 +162,10 @@ explicitly and state the split in the theorem name.
 ## 8. Repository conventions
 
 * Package name `Research`; root module `Research.lean` imports each file.
-* `FinLaw` is the finite-law structure in `Research/StopLoss.lean`; reuse it
-  rather than introducing parallel probability conventions.
+* `FinLaw` is the finite-law structure in `Research/StopLoss.lean`; `FinLawR` is
+  its real-valued twin in `Research/Real/Sqrt.lean`. Reuse them rather than
+  introducing parallel probability conventions. The measure tier uses
+  `MeasureTheory.Measure` and does not touch either structure.
 * Rationals for exact statements, reals only where the analysis requires them.
 * Experiments are dependency-free Python 3 with `from fractions import Fraction`
   where exactness matters.
@@ -155,20 +180,24 @@ explicitly and state the split in the theorem name.
    strategies (or exhausts a heartbeat), stop. Isolate the lemmas that do compile,
    record the exact algebraic blocker in `research/*.md`, tag the theorem
    `PARTIAL`, merge the clean progress, and move on. Do not thrash.
-3. **Build-time budget.** Keep `lake build` under **3 500 jobs / 15 s** (baseline 3 132 jobs / 7.6 s with the real tier; 2 082 without it). `Mathlib.Analysis.Real.Sqrt` must stay isolated inside `Research/Real/` so the rational tier keeps its cheap build.
+3. **Build-time budget.** Keep `lake build` under **7 500 jobs / 20 s** (current
+   7 224 jobs / 8.3 s; the core tier alone is 3 140). `Mathlib.Analysis.Real.Sqrt`
+   stays inside `Research/Real/` and `Mathlib.MeasureTheory` inside
+   `Research/Measure/`, so each tier's cost is attributable.
    Split growing files into submodules (`Research/StopLoss/Interior.lean`,
    `Bounded.lean`, `GeneralVar.lean`, `Ruin.lean`) instead of accumulating one
    file of `nlinarith` calls.
 4. **Dual-certificate exhaustiveness.** When pointwise majorants `qᵢ ≥ f` cover a
    partition of the parameter space, proving the partition is exhaustive proves
    exhaustiveness over *all* laws, because expectation is linear and monotone.
-   Prefer this to Carathéodory or measure-theoretic machinery. Corollary: never
-   take a maximum over candidate *formulas*; the supremum is the smallest valid
-   upper bound, so candidates must be certified before they are compared.
+   Prefer this to Carathéodory machinery; the measure tier exists only for
+   statements that genuinely need it. Corollary: never take a maximum over
+   candidate *formulas*; the supremum is the smallest valid upper bound, so
+   candidates must be certified before they are compared.
 5. **Scientific accountability.** Correct any mathematical error, phantom regime
    or overstated claim immediately, in code, docs, README and GitHub issues, and
-   keep the `PROVED` / `REPRODUCED` / `PARTIAL` / `CONJECTURED` tags exact at every
-   merge. This applies to instructions received from outside as well: verify
+   keep the `PROVED` / `REPRODUCED` / `PARTIAL` / `CONJECTURED` /
+   `STATUS_UNCERTAIN` tags exact at every merge. This applies to instructions received from outside as well: verify
    claims before adopting them.
 
 ### 9b. Amendments (2026-11-21) — per-lemma ratchet
@@ -194,3 +223,21 @@ explicitly and state the split in the theorem name.
 4. **No opaque `set` before `rw`** with external lemmas; unfold first.
 5. **Explicit slope rewrite** (`field_simp; ring`) before `nlinarith` on a slope
    side condition.
+
+## 10. Status — closed experiment (2026-11-21)
+
+This repository is **closed**. It is a record, not an active project.
+
+* **What is checked:** 46 declarations, zero `sorry`, zero custom `axiom`, every
+  footprint exactly `propext, Classical.choice, Quot.sound`. 11 carry mathematical
+  content; the rest are witnesses and algebra helpers.
+* **What is classical:** all of it. Citations are metadata-verified only; no paper
+  was read.
+* **What is absent:** any formalised ruin probability; any solution of the
+  Schmitter problem; any optimal-reinsurance theorem; any novelty claim.
+* **What is known to be loose:** the stop-loss *envelope* bound on `ψ` is valid but
+  non-sharp, and the sharp value of `sup_F ψ_F` is unknown.
+
+**Resuming.** Any resumption requires a written scope: the target theorem, the
+parameter domain, the status tag it is expected to reach, and the build budget it
+may spend. Without that, new work does not start.
