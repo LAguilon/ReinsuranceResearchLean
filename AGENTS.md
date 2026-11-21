@@ -170,3 +170,16 @@ explicitly and state the split in the theorem name.
    keep the `PROVED` / `REPRODUCED` / `PARTIAL` / `CONJECTURED` tags exact at every
    merge. This applies to instructions received from outside as well: verify
    claims before adopting them.
+
+### 9b. Amendments (2026-11-21) — per-lemma ratchet
+
+1. **Per-lemma 3-attempt cap.** The three-strategy limit applies to one lemma, never
+   to total build iterations across a multi-lemma file. Fixing three sub-lemmas
+   across three builds is normal progress, not stalling.
+2. **Monotonic ratchet.** Never delete a file because one lemma fails. Strip only
+   the unproved theorem, commit and merge the helpers that compile, log the blocker
+   on the issue, and continue.
+3. **Micro-slices.** Build 1–2 lemmas (20–40 lines) at a time; do not write a
+   150-line assembly before the first `lake build`.
+4. **Continuous run.** Do not emit status messages mid-queue; only report when the
+   queue is done or every remaining item is genuinely blocked.
