@@ -16,7 +16,8 @@ Lean 4 + Mathlib formalisation of extremal results in insurance mathematics.
 | Feasible couplings of two Bernoulli risks form the interval `[max 0 (p+q-1), min p q]` | `Research/Bernoulli.lean` | `REPRODUCED` |
 | Comonotone coupling maximises / countermonotone minimises `E[φ(X+Y)]` for convex `φ` | `Research/Bernoulli.lean` | `REPRODUCED` |
 | `E[(X-d)⁺] ≤ μ - d/2` when `Var X = μ²`, `0 ≤ d ≤ μ` | `Research/StopLoss.lean` | `REPRODUCED` |
-| Bounded claims on `[0, M]`: four-regime partition (Stage A/B) | `research/trackA-bounded.md` | `CONJECTURED` until kernel-checked |
+| Bounded claims `[0,M]`, interior regime: `E[(X-d)⁺] ≤ (μ-d+s)/2`, `s² = (μ-d)²+σ²` | `Research/StopLossBounded.lean` | `REPRODUCED` |
+| Bounded claims `[0,M]`: four-regime partition, R1/R3/R4 | `research/trackA-bounded.md` | `PARTIAL` / `CONJECTURED` |
 
 Nothing here is claimed as novel. `LITERATURE.md` records the audit, its date and
 its limits (no keyword-search access; fetch-only citation verification).
@@ -33,6 +34,7 @@ on `sup ψ(u)`, **not** the sharp Schmitter supremum. See
 |---|---|
 | `Research/Bernoulli.lean` | Couplings of two Bernoulli risks; feasible interval; convex-order monotonicity; extremal couplings |
 | `Research/StopLoss.lean` | Stop-loss bound under `E[X]=μ`, `Var X = μ²`; quadratic dual certificate; two-point extremal law |
+| `Research/StopLossBounded.lean` | Interior (R2) bounded-claims bound with perfect-square certificate, plus a rational sharpness witness |
 | `Research/Verify.lean` | Imports every public module, prints the axiom footprint of each theorem, and instantiates the main bound at concrete data (non-vacuity) |
 | `research/trackB-dependence-uncertainty.md` | Track B research note |
 | `research/trackA-stop-loss-bounds.md` | Track A research note, with the sharpness caveat |

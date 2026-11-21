@@ -78,13 +78,13 @@ def candidates(mu, sigma2, d):
     # R2: interior tangency pair symmetric around d.
     sb = sqrt((mu - d) ** 2 + sigma2)
     a, b = d - sb, d + sb
-    if a >= 0 and b <= M:
+    if sb > 0 and a >= 0 and b <= M:
         p = (mu - a) / (b - a)
         out.append((p * (b - d), "R2 interior", (a, b), (1 - p, p)))
 
     # R3: a = 0 binds -> law {0, m2/mu}
     b0 = (mu * mu + sigma2) / mu
-    if b0 <= M and b0 > 0:
+    if b0 <= M and b0 > 0 and b0 > d:
         p = mu / b0
         out.append((p * payoff(b0, d), "R3 a=0", (0.0, b0), (1 - p, p)))
 
@@ -118,7 +118,7 @@ def dual_certificate(atoms, d):
     return c, tangent, worst
 
 
-if __name__ == "__main__":
+def main():
     print(f"{'mu':>5} {'var/max':>7} {'d':>4} {'closed':>9} {'primal':>9} {'gap':>9}  regime / atoms")
     worst = 0.0
     for mu in (0.2, 0.35, 0.5, 0.65, 0.8):
@@ -135,3 +135,43 @@ if __name__ == "__main__":
                       f"{best_closed[1]:12s} {sup}")
     print(f"\nworst (closed - primal) over all rows: {worst:.2e}   "
           "(>= 0 means the closed form is at least as large as the enumerated primal)")
+
+# ---------------------------------------------------------- adversarial gate
+def adversarial():
+    """Boundary limits that must not break the closed form (AGENTS.md rule)."""
+    checks = []
+    for mu in (0.1, 0.5, 0.9):
+        # zero variance: the law is degenerate at mu
+        for d in (0.0, mu, M):
+            cand = candidates(mu, 0.0, d)
+            best = max(cand, key=lambda t: t[0])[0]
+            checks.append((f"sigma2=0 mu={mu} d={d:.2f}", best, max(mu - d, 0.0),
+                           abs(best - max(mu - d, 0.0)) < 1e-12))
+        # maximal variance: the two-point law {0, M}
+        s2max = mu * (M - mu)
+        for d in (0.0, 0.5 * mu, mu, 0.5 * (mu + M)):
+            cand = candidates(mu, s2max, d)
+            best = max(cand, key=lambda t: t[0])[0]
+            exact = mu * max(M - d, 0.0) / M     # law {0,M} puts mass mu/M on M
+            checks.append((f"sigma2=max mu={mu} d={d:.2f}", best, exact,
+                           abs(best - exact) < 1e-12))
+        # d = 0 and d = M are the trivial ends
+        checks.append((f"d=0 mu={mu}", max(candidates(mu, 0.25 * mu * (M - mu), 0.0),
+                                           key=lambda t: t[0])[0], mu, None))
+        checks.append((f"d=M mu={mu}", max(candidates(mu, 0.25 * mu * (M - mu), M),
+                                           key=lambda t: t[0])[0], 0.0, None))
+    ok = True
+    for name, got, want, flag in checks:
+        if flag is None:
+            flag = abs(got - want) < 1e-12
+        ok &= flag
+        print(f"  {name:28s} closed={got:.9f} expected={want:.9f} {'PASS' if flag else 'FAIL'}")
+    print("adversarial gate:", "PASS" if ok else "FAIL")
+    return ok
+
+
+if __name__ == "__main__":
+    import sys
+    if "--adversarial" in sys.argv:
+        raise SystemExit(0 if adversarial() else 1)
+    main()

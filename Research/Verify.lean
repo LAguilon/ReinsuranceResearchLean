@@ -11,6 +11,7 @@ footprint is exactly `[propext, Classical.choice, Quot.sound]`.
 -/
 import Research.Bernoulli
 import Research.StopLoss
+import Research.StopLossBounded
 
 namespace Research
 
@@ -40,3 +41,6 @@ end Research
 #print axioms Research.stopLoss_bound
 #print axioms Research.twoPoint_attains
 #print axioms Research.stopLoss_bound_nonvacuous
+#print axioms Research.interior_majorant
+#print axioms Research.stopLoss_bound_interior
+#print axioms Research.interior_sharp
