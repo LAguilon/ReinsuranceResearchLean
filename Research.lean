@@ -6,3 +6,4 @@ import Research.StopLoss.BoundedReal
 import Research.Real.SqrtEndpoints
 import Research.StopLoss.BoundedUnified
 import Research.StopLoss.GeneralVar
+import Research.Measure.StopLossMeasure

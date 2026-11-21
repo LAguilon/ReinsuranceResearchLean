@@ -29,6 +29,15 @@ The words *novel*, *first* and *new result* are not used in this repository.
 | `MemLp` + `max (X - d) 0` bounds | no hits in `Probability/Moments.lean` | NOT-FOUND |
 | `integral_mono` | exists (IntervalIntegral variants confirmed; general Bochner variant present) | FOUND |
 
+## Caveat on the arXiv zero hits
+
+arXiv returned **0 entries** for all three queries. This is **weak evidence**, not
+absence: the arXiv API is keyword-based over titles/abstracts, actuarial science is
+under-represented there, and Lean formalisation of insurance mathematics is
+essentially absent. Zero hits on arXiv say nothing about the actuarial literature,
+which lives in ASTIN Bulletin, IME, SAJ and SSRN. The Crossref and OpenAlex rows are
+the load-bearing ones.
+
 ## What this licenses
 
 * "No existing Lean/Mathlib formalisation of moment-constrained stop-loss bounds was

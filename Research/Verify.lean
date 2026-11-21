@@ -17,6 +17,7 @@ import Research.StopLoss.BoundedReal
 import Research.Real.SqrtEndpoints
 import Research.StopLoss.BoundedUnified
 import Research.StopLoss.GeneralVar
+import Research.Measure.StopLossMeasure
 
 namespace Research
 
@@ -80,3 +81,5 @@ end Research
 #print axioms Research.bound_unbounded_interior
 #print axioms Research.bound_unbounded_atom_zero
 #print axioms Research.stopLoss_bound_unbounded
+#print axioms Research.interior_majorant_all
+#print axioms Research.integral_stopLoss_le

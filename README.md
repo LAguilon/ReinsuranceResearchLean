@@ -50,6 +50,22 @@ lake exe cache get && lake build && lake env lean Research/Verify.lean
 The last command prints 44 lines; CI fails unless every one is exactly
 `[propext, Classical.choice, Quot.sound]`.
 
+
+## Fidelity table — what the formal statement does and does not say
+
+| Formal statement (Lean) | Prose claim this licenses | Not claimed |
+|---|---|---|
+| `integral_stopLoss_le`: `[IsProbabilityMeasure P]`, `MemLp X 2 P`, `0 < s`, `s² = (μ−d)²+σ²`, `∫X = μ`, `∫X² = μ²+σ²` ⟹ `∫ (X−d)⁺ ≤ (μ−d+s)/2` | "the interior mean/variance stop-loss bound holds for arbitrary distributions on a probability space, not only finitely supported ones" | no `X ≥ 0` hypothesis; no upper bound `M`; **not** a supremum — any admissible `s` gives a bound; no sharpness in the insurance class |
+| `interior_majorant_all`: `4s(x−d)⁺ ≤ (x−d+s)²` for all real `x`, `s > 0` | "the pointwise certificate needs no support assumption" | nothing about integration |
+
+**Attainment caveat.** The measure-theoretic bound is attained exactly by the
+two-atom law `{d−r, d+r}` with `r = √((μ−d)²+σ²)`. For `μ=1, σ²=1, d=0.5` that law is
+`{−0.618034, 1.618034}` with masses `0.276393 / 0.723607`; it reproduces mean `1`,
+second moment `2`, and `E[(X−d)⁺] = 0.809016994 = (μ−d+r)/2` to machine precision.
+Because the lower atom is **negative**, this law is outside the insurance class
+`X ≥ 0`, where the supremum is the smaller `0.75`. The measure-theoretic theorem
+therefore says nothing about `X ≥ 0`.
+
 ## Contents of the audit
 
 | Group | Count | Names |
