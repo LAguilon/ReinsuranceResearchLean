@@ -1,10 +1,11 @@
 # Bounded claims on `[0, M]` — regime partition and dual certificates (Stage B)
 
-Status: **`PARTIAL`** — all three certificate cases are kernel-checked
-(`Research/StopLossBounded.lean`): interior, `a = 0`, and `b = M`, each with a
-sharpness witness. What remains is the single unified theorem over the clamped
-formula, i.e. the proof that the three cases cover the whole parameter domain.
-Track A, Issue #4. Date: 2026-11-21.
+Status: **`PARTIAL`** — all three certificate cases are kernel-checked in both
+tiers: `Research/StopLossBounded.lean` (exact rational, with sharpness witnesses)
+and `Research/StopLoss/BoundedReal.lean` (real, for composition). The real tier
+also carries `f_inc`, `f_dec`, `f_le_clamp` (`Research/Real/Sqrt.lean`) and
+`stopLoss_variance_zero`. What remains is the unified theorem over the clamped
+formula. Track A, Issue #4. Date: 2026-11-21.
 
 ## 0. Errata (2026-11-21) — a phantom regime removed
 
@@ -130,8 +131,13 @@ enumerated primal beyond `10⁻¹³`. Adversarial gate (`σ² = 0`, `σ² = μ(M
 
 ## 7. What is not claimed
 
-* Cases A and B are kernel-checked as bounds with sharpness witnesses, but the
-  unified `stopLoss_bound_bounded` over the clamped formula is not yet stated.
+* Cases A and B are kernel-checked as bounds with sharpness witnesses, and their
+  real-tier ports exist, but the unified `stopLoss_bound_bounded` is not stated.
+  Three concrete obstacles are now identified:
+  1. the identities `f(clamp) = case formula` at the three endpoints;
+  2. the coverage implications (`s* ≥ μ ⇒ b₀ ≥ 2d`, `s* ≤ lo ⇒ 2(M−d) ≤ M−μ+lo`);
+  3. the degenerate `σ² = 0` branch, where `f A 0 s = A` can be negative while
+     `E[(X−d)⁺] ≥ 0`, so the statement needs `max 0` there.
 * The reduction (2.1)–(2.2) covers two-atom laws; the certificates are what lift
   the bound to arbitrary laws. Case I's certificate is formalised; A and B are not.
 * No novelty claim: the mean/variance bounded-range literature (De Vylder–
