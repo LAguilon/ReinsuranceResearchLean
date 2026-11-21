@@ -16,8 +16,10 @@ Lean 4 + Mathlib formalisation of extremal results in insurance mathematics.
 | Feasible couplings of two Bernoulli risks form the interval `[max 0 (p+q-1), min p q]` | `Research/Bernoulli.lean` | `REPRODUCED` |
 | Comonotone coupling maximises / countermonotone minimises `E[φ(X+Y)]` for convex `φ` | `Research/Bernoulli.lean` | `REPRODUCED` |
 | `E[(X-d)⁺] ≤ μ - d/2` when `Var X = μ²`, `0 ≤ d ≤ μ` | `Research/StopLoss.lean` | `REPRODUCED` |
-| Bounded claims `[0,M]`, interior regime: `E[(X-d)⁺] ≤ (μ-d+s)/2`, `s² = (μ-d)²+σ²` | `Research/StopLossBounded.lean` | `REPRODUCED` |
-| Bounded claims `[0,M]`: four-regime partition, R1/R3/R4 | `research/trackA-bounded.md` | `PARTIAL` / `CONJECTURED` |
+| Bounded claims `[0,M]`, interior case: `E[(X-d)⁺] ≤ (μ-d+r)/2`, `r² = (μ-d)²+σ²` | `Research/StopLossBounded.lean` | `REPRODUCED` |
+| Bounded claims `[0,M]`, case `a=0`: `E[(X-d)⁺] ≤ μ(1-d/b₀)` | `Research/StopLossBounded.lean` | `REPRODUCED` |
+| Bounded claims `[0,M]`, case `b=M`: `E[(X-d)⁺] ≤ (M-d)(μ-a₁)/(M-a₁)` | `Research/StopLossBounded.lean` | `REPRODUCED` |
+| Bounded claims `[0,M]`: unified clamped theorem over the whole domain | — | `PARTIAL` |
 
 Nothing here is claimed as novel. `LITERATURE.md` records the audit, its date and
 its limits (no keyword-search access; fetch-only citation verification).
@@ -38,7 +40,7 @@ on `sup ψ(u)`, **not** the sharp Schmitter supremum. See
 | `Research/Verify.lean` | Imports every public module, prints the axiom footprint of each theorem, and instantiates the main bound at concrete data (non-vacuity) |
 | `research/trackB-dependence-uncertainty.md` | Track B research note |
 | `research/trackA-stop-loss-bounds.md` | Track A research note, with the sharpness caveat |
-| `research/trackA-bounded.md` | Bounded-claims regime partition and certificates (Stage B) |
+| `research/trackA-bounded.md` | Bounded-claims supremum, three certificate cases, and the errata removing the phantom `μ-d` regime |
 | `LITERATURE.md` | Audited references with DOIs and status labels |
 | `experiments/bernoulli_check.py` | Exact-rational verification of the Track B claims, plus a three-point exploration |
 | `experiments/bounded_stoploss_check.py` | Stage A for bounded claims: closed-form candidates versus enumerated primal |

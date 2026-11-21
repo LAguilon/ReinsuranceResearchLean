@@ -44,3 +44,9 @@ end Research
 #print axioms Research.interior_majorant
 #print axioms Research.stopLoss_bound_interior
 #print axioms Research.interior_sharp
+#print axioms Research.atomZero_majorant
+#print axioms Research.stopLoss_bound_atom_zero
+#print axioms Research.atomZero_sharp
+#print axioms Research.atomTop_majorant
+#print axioms Research.stopLoss_bound_atom_top
+#print axioms Research.atomTop_sharp
