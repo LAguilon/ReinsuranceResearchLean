@@ -13,6 +13,7 @@ import Research.Bernoulli
 import Research.StopLoss
 import Research.StopLossBounded
 import Research.Real.Sqrt
+import Research.StopLoss.BoundedReal
 
 namespace Research
 
@@ -56,3 +57,10 @@ end Research
 #print axioms Research.f_inc
 #print axioms Research.f_dec
 #print axioms Research.f_le_clamp
+#print axioms Research.interior_majorant_R
+#print axioms Research.stopLoss_bound_interior_R
+#print axioms Research.atomZero_majorant_R
+#print axioms Research.stopLoss_bound_atom_zero_R
+#print axioms Research.atomTop_majorant_R
+#print axioms Research.stopLoss_bound_atom_top_R
+#print axioms Research.stopLoss_variance_zero
