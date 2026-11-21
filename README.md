@@ -19,7 +19,7 @@ Lean 4 + Mathlib formalisation of extremal results in insurance mathematics.
 | Bounded claims `[0,M]`, interior case: `E[(X-d)⁺] ≤ (μ-d+r)/2`, `r² = (μ-d)²+σ²` | `Research/StopLossBounded.lean` | `REPRODUCED` |
 | Bounded claims `[0,M]`, case `a=0`: `E[(X-d)⁺] ≤ μ(1-d/b₀)` | `Research/StopLossBounded.lean` | `REPRODUCED` |
 | Bounded claims `[0,M]`, case `b=M`: `E[(X-d)⁺] ≤ (M-d)(μ-a₁)/(M-a₁)` | `Research/StopLossBounded.lean` | `REPRODUCED` |
-| Bounded claims `[0,M]`: unified clamped theorem over the whole domain | — | `PARTIAL` |
+| Bounded claims `[0,M]`: unified `stopLoss_bound_bounded` over the full closed domain | `Research/StopLoss/BoundedUnified.lean` | `REPRODUCED` |
 
 Nothing here is claimed as novel. `LITERATURE.md` records the audit, its date and
 its limits (no keyword-search access; fetch-only citation verification).
