@@ -35,7 +35,7 @@ c941a8137123b432358b1081f3eb69d32f015fca — see the commit that adds this file.
 | Two-atom extremal structure (not three) | REPRODUCED | exact attainment table, Issue #1 |
 | Envelope bound on ruin probability `ψ_F ≤ ψ_G` | PARTIAL, non-sharp | Stage A: 265 pairs, 0 violations; exact `G` only approximated |
 | `ψ(u) = (λ/c)E[(X_I−u)⁺]` | **RETRACTED** | false in general; numbers in Issue #2 |
-| Measure-theoretic stop-loss bound | REPRODUCED | `Research/Measure/StopLossMeasure.lean`, `integral_stopLoss_le` for `MemLp X 2 P`; build 7 224 jobs; attained by `{d−r, d+r}` (negative atom) |
+| Measure-theoretic stop-loss bound | REPRODUCED | `Research/Measure/StopLossMeasure.lean`, `integral_stopLoss_le` for `MemLp X 2 P`; build 7 224 jobs; valid for all real `X` (including `X ≥ 0`), sharp iff `d − r ≥ 0`; the attaining law `{d−r, d+r}` has a negative atom, so in the class `X ≥ 0` the bound is valid but loose (0.809 vs the sharp 0.75) |
 | Any novelty | NOT CLAIMED | `LEDGER.md` |
 
 ## LEDGER summary

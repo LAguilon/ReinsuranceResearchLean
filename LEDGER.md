@@ -17,6 +17,8 @@ The words *novel*, *first* and *new result* are not used in this repository.
 | `Schmitter problem ruin` | Crossref | 3 unrelated items (gambler's ruin, Parisian ruin, "A Ruin Problem") | NOT-FOUND (no Schmitter) |
 | `formalisation actuarial Lean` | Crossref | 3 items, none actuarial-Lean | NOT-FOUND |
 | `stop-loss bound mean variance` | Crossref | query failed (HTTP error), retried once | NOT-FOUND (failed query) |
+| Bowers (1969) | not verified | likely classical source of `E[(X−d)⁺] ≤ (μ−d+√((μ−d)²+σ²))/2`; also Scarf, Lo | **UNREAD** — cited from memory of the Schmitter literature, not opened; no statement is made about its contents |
+
 
 ## Mathlib grep (pinned `fc4f59e5…`, v4.36.0)
 
